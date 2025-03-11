@@ -11,16 +11,23 @@ def create():
         return render_template('pizza_create.html')
     
     elif request.method == "POST":
-        sabor = request.form['sabor']
-        imagem = request.form['imagem']
-        ingredientes = request.form['ingredientes']
-        preco = request.form['preco']
+        sabor = request.form.get('sabor')
+        imagem = request.form.get('imagem', '')  # Imagem opcional
+        ingredientes = request.form.get('ingredientes', '')
+        preco = request.form.get('preco')
 
-        pizza = Pizza(sabor=sabor, imagem=imagem, ingredientes=ingredientes, preco=preco)
-        db.session.add(pizza)
-        db.session.commit()
-        flash('Pizza criada com sucesso!', 'success')
-        return redirect(url_for('.recovery'))
+        try:
+            preco = float(preco)
+            pizza = Pizza(sabor=sabor, imagem=imagem, ingredientes=ingredientes, preco=preco)
+            db.session.add(pizza)
+            db.session.commit()
+            flash('Pizza criada com sucesso!', 'success')
+            return redirect(url_for('.recovery'))
+        except ValueError:
+            flash('Erro: O preço deve ser um número válido.', 'danger')
+            return redirect(url_for('.create'))
+
+
 
 @bp_pizzas.route('/recovery', defaults={'id': 0})
 @bp_pizzas.route('/recovery/<int:id>')
@@ -30,39 +37,51 @@ def recovery(id):
         return render_template('pizza_recovery.html', pizzas=pizzas)
     else:
         pizza = Pizza.query.get(id)
-        return render_template('pizza_detalhes.html', pizza=pizza)
+        if pizza:
+            return render_template('pizza_detalhes.html', pizza=pizza)
+        flash('Pizza não encontrada!', 'danger')
+        return redirect(url_for('.recovery'))
+
+
 
 @bp_pizzas.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    if id and request.method == 'GET':
-        pizza = Pizza.query.get(id)
-        return render_template('pizza_update.html', pizza=pizza)
-
-    if request.method == 'POST':
-        pizza = Pizza.query.get(id)
-        pizza.sabor = request.form.get('sabor')
-        pizza.imagem = request.form.get('imagem')
-        pizza.ingredientes = request.form.get('ingredientes')
-        pizza.preco = request.form.get('preco')
-
-        db.session.add(pizza)
-        db.session.commit()
-        flash('Pizza atualizada com sucesso!')
-        return redirect(url_for('.recovery', id=id))
-
-@bp_pizzas.route('/delete/<int:id>', methods=['GET', 'POST'])
-def delete(id):
-    if id == 0: 
-        flash('É preciso definir uma pizza para ser excluída') 
+    pizza = Pizza.query.get(id)
+    if not pizza:
+        flash('Pizza não encontrada!', 'danger')
         return redirect(url_for('.recovery'))
 
     if request.method == 'GET':
-        pizza = Pizza.query.get(id)
+        return render_template('pizza_update.html', pizza=pizza)
+
+    if request.method == 'POST':
+        pizza.sabor = request.form.get('sabor')
+        pizza.imagem = request.form.get('imagem', pizza.imagem)
+        pizza.ingredientes = request.form.get('ingredientes', pizza.ingredientes)
+
+        try:
+            pizza.preco = float(request.form.get('preco', pizza.preco))
+            db.session.commit()
+            flash('Pizza atualizada com sucesso!', 'success')
+        except ValueError:
+            flash('Erro: O preço deve ser um número válido.', 'danger')
+
+        return redirect(url_for('.recovery'))
+
+
+
+@bp_pizzas.route('/delete/<int:id>', methods=['GET', 'POST'])
+def delete(id):
+    pizza = Pizza.query.get(id)
+    if not pizza:
+        flash('Pizza não encontrada!', 'danger')
+        return redirect(url_for('.recovery'))
+
+    if request.method == 'GET':
         return render_template('pizza_delete.html', pizza=pizza)
     
     if request.method == 'POST':
-        pizza = Pizza.query.get(id)
         db.session.delete(pizza)
         db.session.commit()
-        flash('Pizza excluída com sucesso!')
+        flash('Pizza excluída com sucesso!', 'success')
         return redirect(url_for('.recovery'))
