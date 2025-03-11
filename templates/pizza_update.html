@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<h1>Atualizar Pizza</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="sabor" class="form-label">Sabor</label>
+        <input type="text" class="form-control" id="sabor" name="sabor" value="{{ pizza.sabor }}" required>
+    </div>
+    
+    <div class="mb-3">
+        <label for="imagem" class="form-label">URL da Imagem</label>
+        <input type="text" class="form-control" id="imagem" name="imagem" value="{{ pizza.imagem }}" required>
+    </div>
+    
+    <div class="mb-3">
+        <label for="ingredientes" class="form-label">Ingredientes</label>
+        <textarea class="form-control" id="ingredientes" name="ingredientes" rows="3" required>{{ pizza.ingredientes }}</textarea>
+    </div>
+    
+    <div class="mb-3">
+        <label for="preco" class="form-label">Preço</label>
+        <input type="number" step="0.01" class="form-control" id="preco" name="preco" value="{{ pizza.preco }}" required>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Atualizar</button>
+    <a href="{{ url_for('pizzas.recovery') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+   {{titulo}}
+{% endblock %}
+
+
+{% block conteudo %}
+    <ul>
+        {% for p in pizzas %}
+
+        <div class="card" style="width: 18rem;">
+            <img src="{{url_for('static', filename='imgs/'+p.imagem)}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{p.sabor}}</h5>
+              <p class="card-text">Preço: {{p.preco}}</p>
+              <a href="#" class="btn btn-primary">Pedir pizza</a>
+            </div>
+          </div>
+
+        {% endfor %}
+    </ul>
+{% endblock %}

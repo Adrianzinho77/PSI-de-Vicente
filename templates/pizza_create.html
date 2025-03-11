@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<form action="" method="post">
+    <div class="mb-3">
+        <label for="sabor" class="form-label">Sabor</label>
+        <input type="text" class="form-control" id="sabor" name="sabor" placeholder="Digite o sabor da pizza" required>
+    </div>
+    <div class="mb-3">
+        <label for="imagem" class="form-label">Imagem URL</label>
+        <input type="text" class="form-control" id="imagem" name="imagem" placeholder="Digite a URL da imagem" required>
+    </div>
+    <div class="mb-3">
+        <label for="ingredientes" class="form-label">Ingredientes</label>
+        <input type="text" class="form-control" id="ingredientes" name="ingredientes" placeholder="Digite os ingredientes" required>
+    </div>
+    <div class="mb-3">
+        <label for="preco" class="form-label">Preço</label>
+        <input type="number" class="form-control" id="preco" name="preco" placeholder="Digite o preço" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+{% endblock %}

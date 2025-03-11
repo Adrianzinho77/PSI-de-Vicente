@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+    
+{% block conteudo %}
+    <form action="{{ url_for('cadastro') }}" method="post">
+        Nome: <input type="text" name="nome"><br>
+        E-mail: <input type="text" name="email"><br>
+        Senha: <input type="password" name="senha"><br>
+        Confirmar Senha: <input type="password" name="csenha"><br>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+
+{% endblock %}

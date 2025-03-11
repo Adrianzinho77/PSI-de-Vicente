@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+    <ul>
+    {% for p in pizzas %}
+        <li>
+            {{ p.sabor }} - R$ {{ p.preco }} - {{ p.ingredientes }} - 
+            <a href="{{ url_for('pizzas.update', id=p.id) }}">editar</a> 
+            <a href="{{ url_for('pizzas.delete', id=p.id) }}">excluir</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

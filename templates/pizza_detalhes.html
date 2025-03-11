@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+<h1>Detalhes da Pizza</h1>
+<p><strong>Sabor:</strong> {{ pizza.sabor }}</p>
+<p><strong>Imagem:</strong> <img src="{{ pizza.imagem }}" alt="Imagem da pizza" width="200"></p>
+<p><strong>Ingredientes:</strong> {{ pizza.ingredientes }}</p>
+<p><strong>Preço:</strong> R$ {{ pizza.preco }}</p>
+{% endblock %}
