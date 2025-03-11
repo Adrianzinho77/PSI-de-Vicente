@@ -13,6 +13,7 @@ app.register_blueprint(bp_usuarios, url_prefix='/usuarios')
 app.register_blueprint(bp_pizzas, url_prefix='/pizzas')
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
 db_host = os.getenv('DB_HOST')
 db_usuario = os.getenv('DB_USERNAME')
 db_senha = os.getenv('DB_PASSWORD')
@@ -35,7 +36,6 @@ def login():
         usuario = request.form['usuario']
         senha = request.form['senha']
 
-        
         user = Usuario.query.filter_by(nome=usuario).first()
 
         if user and check_password_hash(user.senha, senha):
@@ -44,7 +44,6 @@ def login():
         else:
             flash('Usuário ou senha incorretos!', 'danger')
             return redirect(url_for('login'))  
-
     return render_template('login.html')
 
 @app.route('/cadastro', methods=['GET', 'POST'])

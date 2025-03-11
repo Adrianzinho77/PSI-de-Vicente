@@ -20,8 +20,9 @@ def create():
         db.session.add(usuario)
         db.session.commit()
         flash('Dados inseridos com sucesso', 'success')
-        return redirect('usuarios.recovery')
+        return url_for('.recovery')
 
+        
 @bp_usuarios.route('/recovery', defaults={'id': 0})
 @bp_usuarios.route('/recovery/<int:id>')
 def recovery(id):
@@ -31,6 +32,7 @@ def recovery(id):
     else:
         usuario = Usuario.query.get(id)
         return render_template('usuarios_detalhes.html', usuario=usuario)
+
 
 @bp_usuarios.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
@@ -47,12 +49,13 @@ def update(id):
         usuario.senha = request.form.get('senha')
     else:
         flash('Senhas não conferem')
-        return redirect(url_for('.update', id=id))
+        return redirect(url_for('.update', id=id))  ##Se a senha não for igual, exibe uma flash message e volta para a mesma página.
 
     db.session.add(usuario) 
     db.session.commit()
     flash('Dados atualizados com sucesso!')
     return redirect(url_for('.recovery', id=id))
+
 
 @bp_usuarios.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
